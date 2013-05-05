@@ -7,6 +7,10 @@ import com.frugs.dungeoncrawler.event.Interruptible
 import com.frugs.dungeoncrawler.game.Player
 import com.jme3.math.Vector3f
 import groovy.transform.CompileStatic
+import groovy.transform.TypeChecked
+import groovy.transform.TypeCheckingMode
+
+import static groovy.transform.TypeCheckingMode.SKIP
 
 @CompileStatic
 class PlayerMove implements Interruptible, Interrupter {
@@ -34,6 +38,7 @@ class PlayerMove implements Interruptible, Interrupter {
     }
 
     @Override
+    @TypeChecked(SKIP)
     void process(float tpf) {
         continueMoving = player.moveTowardsDestination(destination, tpf)
         rotated = rotate ? player.rotateTowardsDestination(destination, tpf) : false

@@ -1,7 +1,9 @@
 package com.frugs.dungeoncrawler.util
 
 import com.jme3.math.FastMath
+import groovy.transform.CompileStatic
 
+@CompileStatic
 class Radians {
     static float normaliseAngle(float angle) {
         StrictMath.abs(angle) % FastMath.TWO_PI

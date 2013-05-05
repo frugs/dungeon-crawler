@@ -14,6 +14,7 @@ import groovy.transform.CompileStatic
 import groovyx.gpars.stm.GParsStm
 
 @CompileStatic
+@Mixin(MoveTowards)
 class Player extends Node {
 
     float speed = 8.0f
@@ -39,22 +40,6 @@ class Player extends Node {
         super.move(offset)
     }
 
-    //return value is true if we've got more to go
-    boolean moveTowardsDestination(Vector3f destination, float tpf) {
-        GParsStm.atomicWithBoolean {
-            def remainingTravel = destination.subtract(localTranslation)
-            def displacement = remainingTravel.normalize().mult(speed).mult(tpf)
-
-            if (remainingTravel.length() == 0) {
-                return false
-            }
-
-            def stillMoving = displacement.length() < remainingTravel.length()
-            stillMoving ? move(displacement) : move(remainingTravel)
-            stillMoving
-        }
-    }
-
     //return value is true if we've got more to rotate
     boolean rotateTowardsDestination(Vector3f destination, float tpf) {
         GParsStm.atomicWithBoolean {
@@ -68,7 +53,7 @@ class Player extends Node {
     }
 
     private Geometry createDome(Material mat) {
-        Geometry dome = new Geometry("Dome", new Dome(Vector3f.ZERO, 2, 4, 1.5f, true))
+        Geometry dome = new Geometry("PlayerGeom", new Dome(Vector3f.ZERO, 2, 4, 1.5f, true))
         dome.rotate(FastMath.HALF_PI, 0.0f, 0.0f)
         mat.setColor("Color", ColorRGBA.Blue)
         material = mat

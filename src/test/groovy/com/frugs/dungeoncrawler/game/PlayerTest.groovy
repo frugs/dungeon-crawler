@@ -4,6 +4,8 @@ import com.jme3.material.Material
 import com.jme3.math.FastMath
 import com.jme3.math.Vector3f
 import groovy.transform.CompileStatic
+import groovy.transform.TypeChecked
+import groovy.transform.TypeCheckingMode
 import org.junit.Before
 import org.junit.Test
 
@@ -86,5 +88,13 @@ class PlayerTest {
 
     void assertRotatedAntiClockwise() {
         assert player.facingDirection.x > 0, "Player rotated clockwise to $player.facingDirection"
+    }
+
+    @Test
+    @TypeChecked(TypeCheckingMode.SKIP)
+    void moveTowardsDestination_shouldStopAtDestination_givenSpeedIsGreaterThanDistanceToTravel() {
+        player.speed = 5.0f
+        player.moveTowardsDestination(Vector3f.UNIT_Z, tpf)
+        assert player.localTranslation == Vector3f.UNIT_Z
     }
 }
